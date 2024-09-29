@@ -1712,6 +1712,7 @@ void afl_fsrv_start(afl_forkserver_t *fsrv, char **argv,
 void afl_fsrv_kill(afl_forkserver_t *fsrv) {
 
   if (fsrv->child_pid > 0) { kill(fsrv->child_pid, fsrv->child_kill_signal); }
+  if (fsrv->python_pid > 0) { kill(fsrv->python_pid, fsrv->child_kill_signal); }
   if (fsrv->fsrv_pid > 0) {
 
     kill(fsrv->fsrv_pid, fsrv->fsrv_kill_signal);
