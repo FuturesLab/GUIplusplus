@@ -639,7 +639,7 @@ int main(int argc, char **argv_orig, char **envp) {
         break;
       case 'K':
          
-         gui_dir = optarg;
+         afl->gui_dir = optarg;
          
          break;
       case 'P':
