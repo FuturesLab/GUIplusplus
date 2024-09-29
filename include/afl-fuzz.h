@@ -550,6 +550,7 @@ typedef struct afl_state {
       *in_bitmap,                       /* Input bitmap                     */
       *file_extension,                  /* File extension                   */
       *orig_cmdline,                    /* Original command line            */
+      *gui_dir,
       *infoexec;                       /* Command to execute on a new crash */
 
   u32 hang_tmout,                       /* Timeout used for hang det (ms)   */
