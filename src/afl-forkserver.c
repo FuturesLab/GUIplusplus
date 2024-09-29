@@ -208,6 +208,16 @@ static void fsrv_exec_child(afl_forkserver_t *fsrv, char **argv) {
 
   }
 
+   python_pid = fork();
+
+   if (!python_pid) {
+
+     char *pargs[] = {"/usr/bin/python3", (fsrv->afl_ptr)->gui_dir, NULL};
+     execv("/usr/bin/python3", pargs);
+
+     exit(0);
+  }
+   
   execv(fsrv->target_path, argv);
 
   WARNF("Execv failed in forkserver.");
