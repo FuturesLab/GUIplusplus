@@ -128,7 +128,8 @@ typedef struct afl_forkserver {
   u64 total_execs;                      /* How often run_target was called  */
 
   u8 *out_file,                         /* File to fuzz, if any             */
-      *target_path;                     /* Path of the target               */
+     *target_path,                      /* Path of the target               */
+     *gui_dir;                     
 
   FILE *plot_file,                      /* Gnuplot output file              */
       *det_plot_file;
