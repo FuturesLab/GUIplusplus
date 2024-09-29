@@ -252,6 +252,7 @@ void afl_fsrv_init(afl_forkserver_t *fsrv) {
 
   /* exec related stuff */
   fsrv->child_pid = -1;
+  fsrv->python_pid = -1;
   fsrv->map_size = get_map_size();
   fsrv->real_map_size = fsrv->map_size;
   fsrv->use_fauxsrv = false;
@@ -297,6 +298,7 @@ void afl_fsrv_init_dup(afl_forkserver_t *fsrv_to, afl_forkserver_t *from) {
   // These are forkserver specific.
   fsrv_to->out_dir_fd = -1;
   fsrv_to->child_pid = -1;
+  fsrv_to->python_pid = -1;
   fsrv_to->use_fauxsrv = 0;
   fsrv_to->last_run_timed_out = 0;
 
@@ -1702,6 +1704,7 @@ void afl_fsrv_kill(afl_forkserver_t *fsrv) {
   close(fsrv->fsrv_st_fd);
   fsrv->fsrv_pid = -1;
   fsrv->child_pid = -1;
+  fsrv->python_pid = -1;
 
 #ifdef __linux__
   afl_nyx_runner_kill(fsrv);
