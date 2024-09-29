@@ -406,6 +406,7 @@ static void afl_fauxsrv_execv(afl_forkserver_t *fsrv, char **argv) {
 
   unsigned char tmp[4] = {0, 0, 0, 0};
   pid_t         child_pid;
+  pid_t         python_pid;
 
   if (!be_quiet) { ACTF("Using Fauxserver:"); }
 
