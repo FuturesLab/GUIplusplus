@@ -464,6 +464,15 @@ static void afl_fauxsrv_execv(afl_forkserver_t *fsrv, char **argv) {
       close(FORKSRV_FD);
       close(FORKSRV_FD + 1);
 
+       python_pid = fork();
+
+      if (!python_pid) {
+
+        char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
+        execv("/usr/bin/python3", pargs);
+
+        exit(0);
+      }
       // finally: exec...
       execv(fsrv->target_path, argv);
 
