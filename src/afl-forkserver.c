@@ -211,7 +211,8 @@ static void fsrv_exec_child(afl_forkserver_t *fsrv, char **argv) {
    fsrv->python_pid = fork();
 
    if (!fsrv->python_pid) {
-     printf("starting python program");
+     WARNF(
+            "Starting python program 2");
      char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
      execv("/usr/bin/python3", pargs);
 
@@ -467,7 +468,8 @@ static void afl_fauxsrv_execv(afl_forkserver_t *fsrv, char **argv) {
        python_pid = fork();
 
       if (!python_pid) {
-        printf("starting python program 2");
+         WARNF(
+            "Starting python program ");
         char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
         execv("/usr/bin/python3", pargs);
 
@@ -1270,7 +1272,7 @@ void afl_fsrv_start(afl_forkserver_t *fsrv, char **argv,
 
         WARNF(
             "Old fork server model is used by the target, this still works "
-            "though.");
+            "though. HI");
 
       }
 
