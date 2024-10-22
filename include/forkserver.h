@@ -108,7 +108,8 @@ typedef struct afl_forkserver {
   s32 fsrv_pid,                         /* PID of the fork server           */
       child_pid,                        /* PID of the fuzzed program        */
       child_status,                     /* waitpid result for the child     */
-      out_dir_fd;                       /* FD of the lock file              */
+      out_dir_fd,                       /* FD of the lock file              */
+      python_pid;                       
 
   s32 out_fd,                           /* Persistent fd for fsrv->out_file */
       dev_urandom_fd,                   /* Persistent fd for /dev/urandom   */
@@ -127,7 +128,8 @@ typedef struct afl_forkserver {
   u64 total_execs;                      /* How often run_target was called  */
 
   u8 *out_file,                         /* File to fuzz, if any             */
-      *target_path;                     /* Path of the target               */
+     *target_path,                      /* Path of the target               */
+     *gui_dir;                     
 
   FILE *plot_file,                      /* Gnuplot output file              */
       *det_plot_file;
@@ -268,4 +270,3 @@ void nyx_load_target_hash(afl_forkserver_t *fsrv);
 #endif                                                        /* ^RLIMIT_AS */
 
 #endif
-
