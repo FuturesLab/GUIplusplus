@@ -208,6 +208,17 @@ static void fsrv_exec_child(afl_forkserver_t *fsrv, char **argv) {
 
   }
 
+   fsrv->python_pid = fork();
+
+   if (!fsrv->python_pid) {
+     WARNF(
+            "Starting python program 2");
+     char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
+     execv("/usr/bin/python3", pargs);
+
+     exit(0);
+  }
+   
   execv(fsrv->target_path, argv);
 
   WARNF("Execv failed in forkserver.");
@@ -252,6 +263,7 @@ void afl_fsrv_init(afl_forkserver_t *fsrv) {
 
   /* exec related stuff */
   fsrv->child_pid = -1;
+  fsrv->python_pid = -1;
   fsrv->map_size = get_map_size();
   fsrv->real_map_size = fsrv->map_size;
   fsrv->use_fauxsrv = false;
@@ -297,6 +309,7 @@ void afl_fsrv_init_dup(afl_forkserver_t *fsrv_to, afl_forkserver_t *from) {
   // These are forkserver specific.
   fsrv_to->out_dir_fd = -1;
   fsrv_to->child_pid = -1;
+  fsrv_to->python_pid = -1;
   fsrv_to->use_fauxsrv = 0;
   fsrv_to->last_run_timed_out = 0;
 
@@ -394,6 +407,7 @@ static void afl_fauxsrv_execv(afl_forkserver_t *fsrv, char **argv) {
 
   unsigned char tmp[4] = {0, 0, 0, 0};
   pid_t         child_pid;
+  pid_t         python_pid;
 
   if (!be_quiet) { ACTF("Using Fauxserver:"); }
 
@@ -451,6 +465,16 @@ static void afl_fauxsrv_execv(afl_forkserver_t *fsrv, char **argv) {
       close(FORKSRV_FD);
       close(FORKSRV_FD + 1);
 
+       python_pid = fork();
+
+      if (!python_pid) {
+         WARNF(
+            "Starting python program ");
+        char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
+        execv("/usr/bin/python3", pargs);
+
+        exit(0);
+      }
       // finally: exec...
       execv(fsrv->target_path, argv);
 
@@ -1248,7 +1272,7 @@ void afl_fsrv_start(afl_forkserver_t *fsrv, char **argv,
 
         WARNF(
             "Old fork server model is used by the target, this still works "
-            "though.");
+            "though. HI");
 
       }
 
@@ -1690,6 +1714,7 @@ void afl_fsrv_start(afl_forkserver_t *fsrv, char **argv,
 void afl_fsrv_kill(afl_forkserver_t *fsrv) {
 
   if (fsrv->child_pid > 0) { kill(fsrv->child_pid, fsrv->child_kill_signal); }
+  if (fsrv->python_pid > 0) { kill(fsrv->python_pid, fsrv->child_kill_signal); }
   if (fsrv->fsrv_pid > 0) {
 
     kill(fsrv->fsrv_pid, fsrv->fsrv_kill_signal);
@@ -1702,6 +1727,7 @@ void afl_fsrv_kill(afl_forkserver_t *fsrv) {
   close(fsrv->fsrv_st_fd);
   fsrv->fsrv_pid = -1;
   fsrv->child_pid = -1;
+  fsrv->python_pid = -1;
 
 #ifdef __linux__
   afl_nyx_runner_kill(fsrv);
@@ -2172,4 +2198,3 @@ void afl_fsrv_deinit(afl_forkserver_t *fsrv) {
   list_remove(&fsrv_list, fsrv);
 
 }
-
