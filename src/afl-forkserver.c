@@ -214,6 +214,7 @@ static void fsrv_exec_child(afl_forkserver_t *fsrv, char **argv) {
      WARNF(
             "Starting python program 2");
      printf("python execv2\n");
+     fflush(stdout);
      char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
      execv("/usr/bin/python3", pargs);
 
@@ -472,6 +473,7 @@ static void afl_fauxsrv_execv(afl_forkserver_t *fsrv, char **argv) {
          WARNF(
             "Starting python program ");
         printf("python execv1\n");
+        fflush(stdout);
         char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
         execv("/usr/bin/python3", pargs);
 
