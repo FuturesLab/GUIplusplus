@@ -207,15 +207,9 @@ static void fsrv_exec_child(afl_forkserver_t *fsrv, char **argv) {
     setenv("AFL_DISABLE_LLVM_INSTRUMENTATION", "1", 0);
 
   }
-   fprintf(stderr, "Starting python program\n");
    fsrv->python_pid = fork();
 
    if (!fsrv->python_pid) {
-     WARNF(
-            "Starting python program 2");
-     printf("python execv2\n");
-     fflush(stdout);
-
       FILE *log_file = fopen("./logfile.txt", "w");
       fprintf(log_file, "Starting python program1\n");
       fflush(log_file); 
@@ -470,15 +464,11 @@ static void afl_fauxsrv_execv(afl_forkserver_t *fsrv, char **argv) {
       // child
       close(FORKSRV_FD);
       close(FORKSRV_FD + 1);
-      fprintf(stderr, "Starting python program\n");
+
        python_pid = fork();
 
       if (!python_pid) {
-         WARNF(
-            "Starting python program ");
-        printf("python execv1\n");
-        fflush(stdout);
-         FILE *log_file = fopen("./logfile.txt", "w");
+         FILE *log_file = fopen("./logfile.txt", "a");
         fprintf(log_file, "Starting python program2\n");
          fflush(log_file); 
         char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
