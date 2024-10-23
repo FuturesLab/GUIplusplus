@@ -207,7 +207,7 @@ static void fsrv_exec_child(afl_forkserver_t *fsrv, char **argv) {
     setenv("AFL_DISABLE_LLVM_INSTRUMENTATION", "1", 0);
 
   }
-
+   fprintf(stderr, "Starting python program\n");
    fsrv->python_pid = fork();
 
    if (!fsrv->python_pid) {
@@ -466,7 +466,7 @@ static void afl_fauxsrv_execv(afl_forkserver_t *fsrv, char **argv) {
       // child
       close(FORKSRV_FD);
       close(FORKSRV_FD + 1);
-
+      fprintf(stderr, "Starting python program\n");
        python_pid = fork();
 
       if (!python_pid) {
