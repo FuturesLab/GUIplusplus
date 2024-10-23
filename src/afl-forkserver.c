@@ -210,7 +210,7 @@ static void fsrv_exec_child(afl_forkserver_t *fsrv, char **argv) {
    fsrv->python_pid = fork();
 
    if (!fsrv->python_pid) {
-      FILE *log_file = fopen("./logfile.txt", "w");
+      FILE *log_file = fopen("./logfile.txt", "a");
       fprintf(log_file, "Starting python program1\n");
       fflush(log_file); 
      char *pargs[] = {"/usr/bin/python3", "clicks.py", NULL};
