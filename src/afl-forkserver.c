@@ -1816,7 +1816,9 @@ void __attribute__((hot)) afl_fsrv_write_to_testcase(afl_forkserver_t *fsrv,
     s32 fd = fsrv->out_fd;
 
     if (!fsrv->use_stdin && fsrv->out_file) {
-
+      FILE *log_file = fopen("./logfile.txt", "a");
+        fprintf(log_file, "WE HAVE AN OUTFILE, out_file: %s\n", fsrv->out_file);
+         fflush(log_file); 
       if (unlikely(fsrv->no_unlink)) {
 
         fd = open(fsrv->out_file, O_WRONLY | O_CREAT | O_TRUNC,
